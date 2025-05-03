@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="sale_product_configurator.dialog" t-inherit-mode="extension">
+        <xpath expr="//ProductList[@products='this.state.products']" position="attributes">
+            <attribute name="tallyMode">this.state.tallyMode</attribute>
+        </xpath>
+        <xpath expr="//ProductList[@products='this.state.optionalProducts']" position="attributes">
+            <attribute name="tallyMode">this.state.tallyMode</attribute>
+        </xpath>
+        <xpath expr="//Dialog/ProductList[1]" position="after">
+            <table t-if="this.state.tallyMode" t-ref="root" class="o_section_and_note_list_view o_list_table table table-sm table-hover position-relative mb-0 o_list_table_ungrouped table-striped" width="100%">
+                <thead>
+                    <tr>
+                        <th class="text-right p-2">SI No</th>
+                        <th class="text-right p-2">Quantity</th>
+                        <th class="text-right p-2">Length</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="this.state.quantityList" t-as="quantity" t-key="quantity.id">
+                        <td class="o_data_cell cursor-pointer o_field_cell o_list_number o_required_modifier">
+                            <div name="si_no" class="o_field_widget o_readonly_modifier o_field_float">
+                                <span><t t-esc="quantity.siNo"/></span>
+                            </div>
+                        </td>
+                        <td class="o_data_cell cursor-pointer o_field_cell o_list_number o_required_modifier">
+                            <div name="quantity" class="o_field_widget o_required_modifier o_field_float">
+                                <input
+                                    class="o_input" input_mode="decimal"
+                                    name="extra_quantity"
+                                    type="number"
+                                    t-model="quantity.quantity"/>
+                            </div>
+                        </td>
+                        <td class="o_data_cell cursor-pointer o_field_cell o_list_number o_required_modifier">
+                            <div name="length" class="o_field_widget o_required_modifier o_field_float">
+                                <input
+                                    class="o_input" input_mode="decimal"
+                                    name="length"
+                                    type="number"
+                                    t-model="quantity.length"
+                                    t-on-keydown="(ev) => handleTabOnLength(ev, quantity)"/>
+                            </div>
+                        </td>
+                        <td class="o_list_record_remove text-center">
+                            <button class="btn btn-link" t-on-click="() => removeQuantity(quantity.id)">
+                                <i class="fa fa-trash"/>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="o_field_x2many_list_row_add">
+                            <button class="btn" t-on-click="onButtonClick"><i class="fa fa-plus"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </xpath>
+    </t>
+</templates>
